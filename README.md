@@ -1,5 +1,7 @@
 # README
 
+I generated this with my own [rails template](https://github.com/RyanSnodgrass/personal-rails-template). It's something I picked up from my previous employer. It installs a couple gems that I always use like linters and github workflows.
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
