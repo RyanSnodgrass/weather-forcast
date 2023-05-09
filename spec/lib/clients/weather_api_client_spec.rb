@@ -23,4 +23,18 @@ RSpec.describe WeatherApiClient do
       expect(uri.origin).to eq("http://api.weatherapi.com")
     end
   end
+
+  describe "#call_api" do
+    it "calls the api with the correct params and returns a json object" do
+      # load json response into memory
+      fake_response = File.read("spec/fixtures/fake_forecast_response.json")
+      # stub the api call and return json response
+      stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?key=asdf&q=46615").
+        to_return(body: fake_response, status: 200)
+      # call the api
+      response = subject.send("call_api", "forecast", { q: "46615" })
+      # test a simple value to ensure the response is a json object
+      expect(response["location"]["name"]).to eq("South Bend")
+    end
+  end
 end
