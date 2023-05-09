@@ -33,3 +33,10 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore annoying MacOS system files
+*.DS_Store
+
+# Ignore .env secrets file while keeping the example
+.env*
+!.env.example
