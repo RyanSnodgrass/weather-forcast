@@ -1,4 +1,4 @@
-require "JSON"
+require "json"
 require "net/http"
 
 # This class will be used to make API calls to weatherapi.com.
