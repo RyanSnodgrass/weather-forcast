@@ -80,6 +80,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+
+  # Easily test web requests
+  gem "webmock"
 end
 
 group :development, :test do
