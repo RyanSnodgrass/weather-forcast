@@ -20,7 +20,7 @@ class WeatherApiClient
     # ```
     # WeatherApiClient.forecast("46615", { days: 5 })
     # ```
-    def forecast(zipcode, params={})
+    def forecast(zipcode, params = {})
       params[:q] = zipcode
       params[:days] ||= 3
       call_api("forecast", params)
@@ -42,9 +42,9 @@ class WeatherApiClient
     # To use this method, pass in the root level subject and any extra params
     def build_uri(api_subject, extra_params = {})
       uri = URI("#{API_ROOT_URL}/#{api_subject}.json")
-      params = { key: ENV["WEATHER_API_KEY"] }.merge(extra_params)
+      params = {key: ENV["WEATHER_API_KEY"]}.merge(extra_params)
       uri.query = URI.encode_www_form(params)
-      return uri
+      uri
     end
   end
 end
