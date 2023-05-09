@@ -19,7 +19,7 @@ RSpec.describe WeatherApiClient do
     it "builds a uri object for the api call with zip params" do
       params = { q: "46615" }
       uri = subject.send("build_uri", "forecast", params)
-      expect(uri.request_uri).to eq("/v1//forecast.json?key=asdf&q=46615")
+      expect(uri.request_uri).to eq("/v1/forecast.json?key=asdf&q=46615")
       expect(uri.origin).to eq("http://api.weatherapi.com")
     end
   end
