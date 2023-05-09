@@ -37,7 +37,7 @@ gem "jbuilder"
 # gem "bcrypt", "~> 3.1.7"
 
 # Use Bootstrap Framework for style
-gem 'bootstrap', '~> 5.3.0.alpha3'
+gem "bootstrap", "~> 5.3.0.alpha3"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
