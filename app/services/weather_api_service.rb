@@ -11,13 +11,20 @@ class WeatherApiService
 
   def request_forecast_data
     @response_hash = @client.forecast(@location)
-    # response_hash = message_time_objects(response_hash)
-    @data[:location] = @response_hash["location"]["name"]
-    @data[:days] = @response_hash[]
+    {
+      location: @response_hash["location"]["name"],
+      days: [
+
+      ]
+    }
+    # @data[:location] = @response_hash["location"]["name"]
+    # @data[:days] = @response_hash[]
   end
 
+  private
+
+  # Iterate over the time_intervals using map to create an array of hashes
   def massage_hour_block(raw_day_response)
-    # map returns an array when iterating over the time intervals
     time_intervals.map do |time_string, cordinal|
       # select amongst the array of hashes the "time_string" value that matches
       raw_matching_hour = match_hour_to_time_string(time_string, raw_day_response["hour"])
@@ -32,7 +39,7 @@ class WeatherApiService
     end
   end
 
-  # isolate this logic to reduce size of massage_hour_block
+  # Isolate this logic to reduce size of massage_hour_block
   def match_hour_to_time_string(time_string, raw_day_response_hour)
     # select amongst the array of hashes the "time_string" value that matches
     raw_day_response_hour.select do |raw_hour_hash|
@@ -44,8 +51,6 @@ class WeatherApiService
     # be only one returned.
     end.first
   end
-
-  private
 
   # Predefine the HH:MM to cordinal values instead of calculating each time.
   # Also makes it easy to iterate.

@@ -164,7 +164,7 @@ RSpec.describe WeatherApiService do
 
   describe "#massage_hour_block" do
     it "returns an 4 element array of hour blocks" do
-      hour_blocks = subject.massage_hour_block(today_raw)
+      hour_blocks = subject.send(:massage_hour_block, today_raw)
       expect(hour_blocks).to eq(today_massaged[:hour])
     end
   end
@@ -173,7 +173,7 @@ RSpec.describe WeatherApiService do
     let(:raw_day_response_hour) { today_raw["hour"] }
 
     it "returns the matching hour hash to the time string" do
-      expect(subject.match_hour_to_time_string("01:00", raw_day_response_hour))
+      expect(subject.send(:match_hour_to_time_string, "01:00", raw_day_response_hour))
         # instead of writing out the whole thing, just match on the second element
         .to eq(raw_day_response_hour[1])
     end
