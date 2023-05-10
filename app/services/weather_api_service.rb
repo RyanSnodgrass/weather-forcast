@@ -17,18 +17,18 @@ class WeatherApiService
   end
 
   def massage_hour_block(raw_day_response)
-    # instantiate variable to house hour data
-    hours_data = []
-    # iterate over the time intervals
-    time_intervals.each do |time_string, cordinal|
-
+    # map returns an array when iterating over the time intervals
+    time_intervals.map do |time_string, cordinal|
       # select amongst the array of hashes the "time_string" value that matches
-      matching_hour = match_hour_to_time_string(time_string, raw_day_response["hour"])
-      # hours_data.append(
-      #   {
-      #     hour_data[matching_hour]
-      #   }
-      # )
+      raw_matching_hour = match_hour_to_time_string(time_string, raw_day_response["hour"])
+      {
+        temp: raw_matching_hour["temp_f"].to_s,
+        time: cordinal,
+        condition: {
+          text: raw_matching_hour["condition"]["text"],
+          icon: raw_matching_hour["condition"]["icon"],
+        }
+      }
     end
   end
 
@@ -47,20 +47,9 @@ class WeatherApiService
 
   private
 
+  # Predefine the HH:MM to cordinal values instead of calculating each time.
+  # Also makes it easy to iterate.
   def time_intervals
     {"08:00" => "8AM", "12:00" => "12PM", "16:00" => "4PM", "20:00" => "8PM"}
   end
-
-  # We're dealing a lot with time objects so it makes sense to precompile the
-  # timestamp strings into a DateTime object. Do this once instead of multiple
-  # times during each iteration. Not doing all the timestamps, just the ones we
-  # need now.
-  # def massage_time_objects(response_hash)
-  #   Hash[response_hash.map do |k, v|
-
-  #   end
-  #   response_hash["forecast"]["forecastday"].each do |raw_day|
-  #     raw_day["date"] = DateTime.parse(raw_day["date"])
-  #   end
-  # end
 end

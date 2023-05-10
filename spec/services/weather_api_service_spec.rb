@@ -19,7 +19,7 @@ RSpec.describe WeatherApiService do
           },
           hour: [
             {
-              time: "8am",
+              time: "8AM",
               temp: "52.3",
               condition: {
                 text: "Sunny",
@@ -27,7 +27,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "12pm",
+              time: "12PM",
               temp: "64.6",
               condition: {
                 text: "Sunny",
@@ -35,7 +35,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "4pm",
+              time: "4PM",
               temp: "68.9",
               condition: {
                 text: "Sunny",
@@ -43,7 +43,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "8pm",
+              time: "8PM",
               temp: "60.3",
               condition: {
                 text: "Partly cloudy",
@@ -63,7 +63,7 @@ RSpec.describe WeatherApiService do
           },
           hour: [
             {
-              time: "8am",
+              time: "8AM",
               temp: "52.9",
               condition: {
                 text: "Sunny",
@@ -71,7 +71,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "12pm",
+              time: "12PM",
               temp: "68.2",
               condition: {
                 text: "Sunny",
@@ -79,7 +79,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "4pm",
+              time: "4PM",
               temp: "73.8",
               condition: {
                 text: "Sunny",
@@ -87,7 +87,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "8pm",
+              time: "8PM",
               temp: "65.1",
               condition: {
                 text: "Partly cloudy",
@@ -107,7 +107,7 @@ RSpec.describe WeatherApiService do
           },
           hour: [
             {
-              time: "8am",
+              time: "8AM",
               temp: "56.7",
               condition: {
                 text: "Partly cloudy",
@@ -115,7 +115,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "12pm",
+              time: "12PM",
               temp: "70.0",
               condition: {
                 text: "Sunny",
@@ -123,7 +123,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "4pm",
+              time: "4PM",
               temp: "77.2",
               condition: {
                 text: "Sunny",
@@ -131,7 +131,7 @@ RSpec.describe WeatherApiService do
               }
             },
             {
-              time: "8pm",
+              time: "8PM",
               temp: "66.9",
               condition: {
                 text: "Partly cloudy",
@@ -178,15 +178,4 @@ RSpec.describe WeatherApiService do
         .to eq(raw_day_response_hour[1])
     end
   end
-
-  # describe "massage_time_objects" do
-  #   it "changes the timestamp type from string to date" do
-  #     massaged_time_response = subject.massage_time_objects(fake_response_hash)
-  #     binding.irb
-  #     first_day = massaged_time_response["forecast"]["forecastday"].first
-  #     expect(massaged_time_response["forecast"]["forecastday"].first["date"])
-  #       .to eq(DateTime.new(2023, 5, 9))
-
-  #   end
-  # end
 end
