@@ -13,48 +13,50 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6 col-xl-4">
-      <div class="card">
-        <div class="card-header forecast-card-header">
-          <div class="row">
-            <div class="col">
-              <h3>Today</h3>
+      <% 3.times do %>
+        <div class="card mt-4">
+          <div class="card-header forecast-card-header">
+            <div class="row">
+              <div class="col">
+                <h3>Today</h3>
+              </div>
+              <div class="col text-end">
+                <h3>66.0f</h3>
+              </div>
             </div>
-            <div class="col text-end">
-              <h3>66.0f</h3>
+            <div class="row mt-4">
+              <div class="col">
+                <img src="//cdn.weatherapi.com/weather/64x64/day/113.png" class="img-fluid" alt="sunny">
+                <span>Sunny</span>
+              </div>
+              <div class="col text-end">
+                <h6>Low 63.7</h6>
+                <h6>High 74.2</h6>
+              </div>
             </div>
           </div>
-          <div class="row mt-4">
-            <div class="col">
-              <img src="//cdn.weatherapi.com/weather/64x64/day/113.png" class="img-fluid" alt="sunny">
-              <span>Sunny</span>
-            </div>
-            <div class="col text-end">
-              <h6>Low 63.7</h6>
-              <h6>High 74.2</h6>
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col">
+                <img src="//cdn.weatherapi.com/weather/64x64/day/116.png" class="img-fluid" alt="partly cloudy">
+                <p class="card-text">12pm</p>
+              </div>
+              <div class="col">
+                <img src="//cdn.weatherapi.com/weather/64x64/day/119.png" class="img-fluid" alt="cloudy">
+                <p class="card-text">4pm</p>
+              </div>
+              <div class="col">
+                <img src="//cdn.weatherapi.com/weather/64x64/day/113.png" class="img-fluid" alt="sunny">
+                <p class="card-text">8pm</p>
+              </div>
+              <div class="col">
+                <img src="//cdn.weatherapi.com/weather/64x64/day/176.png" class="img-fluid" alt="Patchy rain possible">
+                <p class="card-text">12am</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <div class="row text-center">
-            <div class="col">
-              <img src="//cdn.weatherapi.com/weather/64x64/day/116.png" class="img-fluid" alt="partly cloudy">
-              <p class="card-text">12pm</p>
-            </div>
-            <div class="col">
-              <img src="//cdn.weatherapi.com/weather/64x64/day/119.png" class="img-fluid" alt="cloudy">
-              <p class="card-text">4pm</p>
-            </div>
-            <div class="col">
-              <img src="//cdn.weatherapi.com/weather/64x64/day/113.png" class="img-fluid" alt="sunny">
-              <p class="card-text">8pm</p>
-            </div>
-            <div class="col">
-              <img src="//cdn.weatherapi.com/weather/64x64/day/176.png" class="img-fluid" alt="Patchy rain possible">
-              <p class="card-text">12am</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
