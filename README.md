@@ -6,6 +6,7 @@ I generated this with my own [rails template](https://github.com/RyanSnodgrass/p
 
 ```
 bundle install
+bundle exec rails assets:precompile
 bundle exec rails s
 ```
 
