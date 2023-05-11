@@ -56,11 +56,15 @@ RSpec.describe WeatherApiClient do
   end
 
   describe "caching the api call" do
+    let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
     # eating own dogfood to generate api_uri
     let(:api_uri) { subject.send(:build_uri, "forecast", q: "46615") }
-    let(:past_expiration_date) { past_expiration_date = Time.zone.now + 35.minutes }
+    let(:past_expiration_date) { Time.zone.now + 35.minutes }
 
     before(:each) do
+      # Resist temptation to turn on caching across the test suite. Try to turn it on
+      # only when you need to test it.
+      allow(Rails).to receive(:cache).and_return(memory_store)
       stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?key=asdf&q=46615")
         .to_return(body: fake_response, status: 200)
       # clear out the cache before every test
