@@ -12,13 +12,21 @@ class WeatherApiService
 
   # Tie everything together and return the data hash
   def request_forecast_data
-    {
-      location: raw_response_hash["location"]["name"],
-      live_request: @client.live_request,
-      days: raw_response_hash["forecast"]["forecastday"].map do |raw_day_response|
-        massage_day_block(raw_day_response)
-      end
-    }
+    if raw_response_hash.key?("error")
+      {
+        error: raw_response_hash["error"]["message"],
+        live_request: @client.live_request,
+        days: []
+      }
+    else
+      {
+        location: raw_response_hash["location"]["name"],
+        live_request: @client.live_request,
+        days: raw_response_hash["forecast"]["forecastday"].map do |raw_day_response|
+          massage_day_block(raw_day_response)
+        end
+      }
+    end
   end
 
   private
