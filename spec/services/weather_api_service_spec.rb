@@ -167,7 +167,11 @@ RSpec.describe WeatherApiService do
     end
 
     it "takes the response data and returns in a usable structure" do
-      expect(subject.request_forecast_data).to eq(forecast_data_expectation)
+      data = subject.request_forecast_data
+      expect(data).to eq(forecast_data_expectation)
+      # Check everything is in order
+      expect(data[:days].first[:day]).to eq("Today")
+      expect(data[:days].second[:day]).to eq("Tomorrow")
     end
   end
 
