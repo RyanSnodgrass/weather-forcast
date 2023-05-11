@@ -157,8 +157,18 @@ RSpec.describe WeatherApiService do
       .to_return(body: fake_response, status: 200)
   end
 
-  it "takes the response data and returns in a usable structure" do
-    expect(subject.request_forecast_data).to eq(forecast_data_expectation)
+  describe "#request_forecast_data" do
+    before do
+      Timecop.freeze(Time.local(2023, 5, 9))
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "takes the response data and returns in a usable structure" do
+      expect(subject.request_forecast_data).to eq(forecast_data_expectation)
+    end
   end
 
   describe "#massage_day_block" do

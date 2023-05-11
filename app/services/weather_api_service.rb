@@ -8,16 +8,16 @@ class WeatherApiService
   def initialize(location)
     @location = location
     @client = WeatherApiClient.new
-    @data = {}
   end
 
+  # Tie everything together and return the data hash
   def request_forecast_data
-    # {
-    #   location: raw_response_hash["location"]["name"],
-    #   days: []
-    # }
-    # @data[:location] = @response_hash["location"]["name"]
-    # @data[:days] = @response_hash[]
+    {
+      location: raw_response_hash["location"]["name"],
+      days: raw_response_hash["forecast"]["forecastday"].map do |raw_day_response|
+        massage_day_block(raw_day_response)
+      end
+    }
   end
 
   private
