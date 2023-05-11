@@ -11,6 +11,13 @@ RSpec.describe "Forecasts", type: :request do
     it "returns http success" do
       stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?days=3&key=asdf&q=46615")
         .to_return(body: fake_response, status: 200)
+      get "/forecasts/index", params: { q: "46615" }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "gracefully handles no location from the browser" do
+      stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?days=3&key=asdf&q=New York")
+        .to_return(body: fake_response, status: 200)
       get "/forecasts/index"
       expect(response).to have_http_status(:success)
     end
