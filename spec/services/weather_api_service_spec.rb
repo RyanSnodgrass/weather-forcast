@@ -7,6 +7,7 @@ RSpec.describe WeatherApiService do
   let(:forecast_data_expectation) {
     {
       location: "South Bend",
+      live_request: true,
       days: [
         {
           day: "Today",

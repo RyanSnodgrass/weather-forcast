@@ -14,6 +14,7 @@ class WeatherApiService
   def request_forecast_data
     {
       location: raw_response_hash["location"]["name"],
+      live_request: @client.live_request,
       days: raw_response_hash["forecast"]["forecastday"].map do |raw_day_response|
         massage_day_block(raw_day_response)
       end
