@@ -183,7 +183,6 @@ RSpec.describe WeatherApiService do
         day: "Today",
         current_temp: "70.0",
         condition: {
-          code: 1000,
           icon: "//cdn.weatherapi.com/weather/64x64/day/113.png",
           text: "Sunny"
         }
@@ -197,7 +196,6 @@ RSpec.describe WeatherApiService do
         day: "Tomorrow",
         current_temp: "60.9",
         condition: {
-          code: 1000,
           icon: "//cdn.weatherapi.com/weather/64x64/day/113.png",
           text: "Sunny"
         }
@@ -211,7 +209,6 @@ RSpec.describe WeatherApiService do
         day: "Thursday",
         current_temp: "64.2",
         condition: {
-          code: 1063,
           icon: "//cdn.weatherapi.com/weather/64x64/day/176.png",
           text: "Patchy rain possible"
         }

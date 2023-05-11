@@ -50,19 +50,28 @@ class WeatherApiService
       {
         day: "Today",
         current_temp: raw_response_hash["current"]["temp_f"].to_s,
-        condition: raw_response_hash["current"]["condition"].transform_keys(&:to_sym)
+        condition: {
+          text: raw_response_hash["current"]["condition"]["text"],
+          icon: raw_response_hash["current"]["condition"]["icon"]
+        }
       }
     elsif iter_date_object.tomorrow?
       {
         day: "Tomorrow",
         current_temp: raw_day_response["day"]["avgtemp_f"].to_s,
-        condition: raw_day_response["day"]["condition"].transform_keys(&:to_sym)
+        condition: {
+          text: raw_day_response["day"]["condition"]["text"],
+          icon: raw_day_response["day"]["condition"]["icon"]
+        }
       }
     else
       {
         day: iter_date_object.strftime("%A"),
         current_temp: raw_day_response["day"]["avgtemp_f"].to_s,
-        condition: raw_day_response["day"]["condition"].transform_keys(&:to_sym)
+        condition: {
+          text: raw_day_response["day"]["condition"]["text"],
+          icon: raw_day_response["day"]["condition"]["icon"]
+        }
       }
     end
   end
