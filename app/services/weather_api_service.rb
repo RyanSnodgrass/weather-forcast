@@ -48,7 +48,7 @@ class WeatherApiService
     # rather than system time.
     if Time.use_zone(raw_response_hash["location"]["tz_id"]) { iter_date_object.today? }
       {
-        day: is_daytime == 1 ? "Today" : "Tonight",
+        day: (is_daytime == 1) ? "Today" : "Tonight",
         current_temp: raw_response_hash["current"]["temp_f"].to_s,
         condition: {
           text: raw_response_hash["current"]["condition"]["text"],
