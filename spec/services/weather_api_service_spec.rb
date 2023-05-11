@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe WeatherApiService do
   let(:subject) { WeatherApiService.new("46615") }
+  let(:error_response) { File.read("spec/fixtures/fake_no_location_found_response.json") }
   let(:fake_response) { File.read("spec/fixtures/fake_forecast_response.json") }
   let(:fake_response_hash) { JSON.parse(fake_response) }
   let(:forecast_data_expectation) {
@@ -144,6 +145,13 @@ RSpec.describe WeatherApiService do
       ]
     }
   }
+  let(:error_data_expectation) {
+    {
+      error: "No matching location found.",
+      live_request: true,
+      days: []
+    }
+  }
   let(:today_massaged) { forecast_data_expectation[:days].first }
   let(:tomorrow_massaged) { forecast_data_expectation[:days].second }
   let(:thursday_massaged) { forecast_data_expectation[:days].first }
@@ -174,6 +182,14 @@ RSpec.describe WeatherApiService do
       # Check everything is in order
       expect(data[:days].first[:day]).to eq("Today")
       expect(data[:days].second[:day]).to eq("Tomorrow")
+    end
+
+    it "gracefully handles error messages" do
+      stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?days=3&key=asdf&q=BadRequest")
+        .to_return(body: error_response, status: 400)
+      graceful_service = WeatherApiService.new("BadRequest")
+      data = graceful_service.request_forecast_data
+      expect(data).to eq(error_data_expectation)
     end
   end
 
