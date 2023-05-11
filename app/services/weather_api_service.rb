@@ -41,12 +41,13 @@ class WeatherApiService
   # These are the attributes that are different depending on which day it is. Gather them
   # all here at once. Then merge them later.
   def dayname_currenttemp_condition(raw_day_response)
-    iter_date_object = DateTime.parse(raw_day_response["date"])
+    Time.zone = raw_response_hash["location"]["tz_id"]
+    iter_date_object = Time.zone.parse(raw_day_response["date"])
     is_daytime = raw_response_hash["current"]["is_day"]
     # The "forecastday" always returns the current day's worth of forecast data. Should
     # be ok to use it to check whether it's today. Always use the timezone of the "location"
     # rather than system time.
-    if Time.use_zone(raw_response_hash["location"]["tz_id"]) { iter_date_object.today? }
+    if iter_date_object.today?
       {
         day: (is_daytime == 1) ? "Today" : "Tonight",
         current_temp: raw_response_hash["current"]["temp_f"].to_s,
@@ -55,7 +56,7 @@ class WeatherApiService
           icon: raw_response_hash["current"]["condition"]["icon"]
         }
       }
-    elsif Time.use_zone(raw_response_hash["location"]["tz_id"]) { iter_date_object.tomorrow? }
+    elsif iter_date_object.tomorrow?
       {
         day: "Tomorrow",
         current_temp: raw_day_response["day"]["avgtemp_f"].to_s,

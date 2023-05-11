@@ -157,15 +157,16 @@ RSpec.describe WeatherApiService do
       .to_return(body: fake_response, status: 200)
   end
 
+  before do
+    Time.zone = fake_response_hash["location"]["tz_id"]
+    Timecop.freeze(Time.zone.local(2023, 5, 9))
+  end
+
+  after do
+    Timecop.return
+  end
+
   describe "#request_forecast_data" do
-    before do
-      Timecop.freeze(Time.local(2023, 5, 9))
-    end
-
-    after do
-      Timecop.return
-    end
-
     it "takes the response data and returns in a usable structure" do
       data = subject.request_forecast_data
       expect(data).to eq(forecast_data_expectation)
@@ -176,14 +177,6 @@ RSpec.describe WeatherApiService do
   end
 
   describe "#massage_day_block" do
-    before do
-      Timecop.freeze(Time.local(2023, 5, 9))
-    end
-
-    after do
-      Timecop.return
-    end
-
     it "combines everything and merges the hash for today" do
       day_block = subject.send(:massage_day_block, today_raw)
       expect(day_block).to eq(today_massaged)
@@ -191,14 +184,6 @@ RSpec.describe WeatherApiService do
   end
 
   describe "#dayname_currenttemp_condition checks what day it is for current_temp and dayname" do
-    before do
-      Timecop.freeze(Time.local(2023, 5, 9))
-    end
-
-    after do
-      Timecop.return
-    end
-
     it "for a record that matches today" do
       day_name = subject.send(:dayname_currenttemp_condition, today_raw)
       expectation = {
