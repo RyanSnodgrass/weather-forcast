@@ -1,6 +1,11 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+      <%= form_with url: forecasts_index_path, method: :get do |form| %>
+        <%= form.label :q, "Search for:" %>
+        <%= form.text_field :q %>
+        <%= form.submit "Search", style: "display: none;" %>
+      <% end %>
       <div class="input-group mt-5 mb-3">
         <input type="text" class="form-control" placeholder="<%= @forecast_data[:location] %>" aria-label="Recipient's username" aria-describedby="basic-addon2">
         <span class="input-group-text" id="basic-addon2">
