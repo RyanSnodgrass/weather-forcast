@@ -33,19 +33,30 @@ class WeatherApiService
   end
 
   def massage_day_block(raw_day_response)
-    # {
-    #   day:
-    # }
+    {
+      day: name_this_day(raw_day_response),
+      current_temp:
+    }
   end
 
-  def name_this_day(raw_day_response)
+
+  def day_name_and_current_temp(raw_day_response)
     iter_date_object = DateTime.parse(raw_day_response["date"])
     if iter_date_object.today?
-      "Today"
+      {
+        day: "Today",
+        current_temp: raw_response_hash["current"]["temp_f"].to_s
+      }
     elsif iter_date_object.tomorrow?
-      "Tomorrow"
+      {
+        day: "Tomorrow",
+        current_temp: raw_day_response["day"]["avgtemp_f"].to_s
+      }
     else
-      iter_date_object.strftime("%A")
+      {
+        day: iter_date_object.strftime("%A"),
+        current_temp: raw_day_response["day"]["avgtemp_f"].to_s
+      }
     end
   end
 

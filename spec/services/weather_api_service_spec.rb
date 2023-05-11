@@ -161,7 +161,14 @@ RSpec.describe WeatherApiService do
     expect(subject.request_forecast_data).to eq(forecast_data_expectation)
   end
 
-  describe "#name_this_day checks what day it is and names the day" do
+  describe "#massage_day_block" do
+    it "creates a day block for today" do
+      day_block = subject.send(:massage_day_block, today_raw)
+      expect(day_block).to eq(today_massaged)
+    end
+  end
+
+  describe "#day_name_and_current_temp checks what day it is for current_temp and dayname" do
     before do
       Timecop.freeze(Time.local(2023, 5, 9))
     end
@@ -170,19 +177,31 @@ RSpec.describe WeatherApiService do
       Timecop.return
     end
 
-    it "for a record that matches 'localtime'" do
-      day_name = subject.send(:name_this_day, today_raw)
-      expect(day_name).to eq("Today")
+    it "for a record that matches today" do
+      day_name = subject.send(:day_name_and_current_temp, today_raw)
+      expectation = {
+        day: "Today",
+        current_temp: "70.0"
+      }
+      expect(day_name).to eq(expectation)
     end
 
     it "for a record that will be tomorrow and names it such" do
-      day_name = subject.send(:name_this_day, tomorrow_raw)
-      expect(day_name).to eq("Tomorrow")
+      day_name = subject.send(:day_name_and_current_temp, tomorrow_raw)
+      expectation = {
+        day: "Tomorrow",
+        current_temp: "60.9"
+      }
+      expect(day_name).to eq(expectation)
     end
 
     it "for a record past that it just uses the day of the week" do
-      day_name = subject.send(:name_this_day, thursday_raw)
-      expect(day_name).to eq("Thursday")
+      day_name = subject.send(:day_name_and_current_temp, thursday_raw)
+      expectation = {
+        day: "Thursday",
+        current_temp: "64.2"
+      }
+      expect(day_name).to eq(expectation)
     end
   end
 
