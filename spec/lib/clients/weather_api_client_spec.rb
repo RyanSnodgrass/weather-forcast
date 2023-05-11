@@ -1,7 +1,7 @@
 require "clients/weather_api_client"
 
 RSpec.describe WeatherApiClient do
-  let(:subject) { WeatherApiClient }
+  let(:subject) { WeatherApiClient.new }
   let(:fake_response) { File.read("spec/fixtures/fake_forecast_response.json") }
   let(:fake_response_hash) { JSON.parse(fake_response) }
 
@@ -45,10 +45,10 @@ RSpec.describe WeatherApiClient do
       # define the expected params that should be passed to the api
       expected_params = {q: "46615", days: 3}
       # stub the api call now that it's isolated and return a pre json parsed response
-      allow(WeatherApiClient).to receive(:call_api)
+      allow_any_instance_of(WeatherApiClient).to receive(:call_api)
         .with("forecast", expected_params).and_return(fake_response_hash)
       # Call the forecast method with only the required param: zipcode
-      forecast = WeatherApiClient.forecast("46615")
+      forecast = subject.forecast("46615")
       expect(forecast).to be_a(Hash)
       expect(forecast["location"]["name"]).to eq("South Bend")
     end

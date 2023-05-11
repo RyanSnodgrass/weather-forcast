@@ -83,6 +83,9 @@ group :test do
 
   # Easily test web requests
   gem "webmock"
+
+  # Easily time travel and time freeze
+  gem "timecop"
 end
 
 group :development, :test do
