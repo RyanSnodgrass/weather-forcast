@@ -43,13 +43,10 @@ class WeatherApiClient
   # If that all happens then @live_request sets to true.
   def cach_or_call_api(api_uri)
     @live_request = false
-    response = Rails.cache.read(api_uri)
-    if response.nil?
+    Rails.cache.fetch(api_uri, expires_in: 30.minutes) do
       @live_request = true
-      response = Net::HTTP.get_response(api_uri)
-      Rails.cache.write(api_uri, response, expires_in: 20.seconds)
+      Net::HTTP.get_response(api_uri)
     end
-    response
   end
 
   # Rusable private method to build a uri object for the api call.
