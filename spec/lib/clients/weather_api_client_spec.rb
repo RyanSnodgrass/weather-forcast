@@ -58,6 +58,7 @@ RSpec.describe WeatherApiClient do
   describe "caching the api call" do
     # eating own dogfood to generate api_uri
     let(:api_uri) { subject.send(:build_uri, "forecast", q: "46615") }
+    let(:past_expiration_date) { past_expiration_date = Time.zone.now + 35.minutes }
 
     before(:each) do
       stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?key=asdf&q=46615")
@@ -87,12 +88,43 @@ RSpec.describe WeatherApiClient do
       # miss the cache and make the first call, setting flag to true
       subject.send(:cach_or_call_api, api_uri)
       # time travel past expiration date
-      past_expiration_date = Time.zone.now + 35.minutes
       Timecop.travel(past_expiration_date)
       # cache has expired so a real request needs to be sent out
       # and flag gets set back to true
       subject.send(:cach_or_call_api, api_uri)
       expect(subject.live_request).to be true
+    end
+
+    # A lot of copy paste here
+    it "is consistent across separate instances" do
+      first_client = WeatherApiClient.new
+      second_client = WeatherApiClient.new
+      # first_client misses the cache and sends out a real request
+      expect {
+        first_client.send(:cach_or_call_api, api_uri)
+      }.to change { first_client.live_request }.from(nil).to(true)
+      # second_client hits the cache and keeps flag false
+      expect {
+        second_client.send(:cach_or_call_api, api_uri)
+      }.to change { second_client.live_request }.from(nil).to(false)
+      # any subsequent calls keep hitting the cache
+      expect {
+        first_client.send(:cach_or_call_api, api_uri)
+      }.to change { first_client.live_request }.from(true).to(false)
+      expect {
+        second_client.send(:cach_or_call_api, api_uri)
+      }.not_to change { second_client.live_request }
+      # time travel past expiration date
+      Timecop.travel(past_expiration_date)
+      # cache has been invalidated and now second_client calls a real
+      # request
+      expect {
+        second_client.send(:cach_or_call_api, api_uri)
+      }.to change { second_client.live_request }.from(false).to(true)
+      # finally, first_client hits the cache
+      expect {
+        first_client.send(:cach_or_call_api, api_uri)
+      }.not_to change { first_client.live_request }
     end
   end
 end
