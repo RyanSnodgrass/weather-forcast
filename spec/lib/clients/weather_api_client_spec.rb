@@ -80,5 +80,19 @@ RSpec.describe WeatherApiClient do
       subject.send(:cach_or_call_api, api_uri)
       expect(subject.live_request).to be false
     end
+
+    it "sets live_request to true if enough time passed to expire cache" do
+      # sanity check that the flag is not set on instantiation
+      expect(subject.live_request).to be nil
+      # miss the cache and make the first call, setting flag to true
+      subject.send(:cach_or_call_api, api_uri)
+      # time travel past expiration date
+      past_expiration_date = Time.zone.now + 35.minutes
+      Timecop.travel(past_expiration_date)
+      # cache has expired so a real request needs to be sent out
+      # and flag gets set back to true
+      subject.send(:cach_or_call_api, api_uri)
+      expect(subject.live_request).to be true
+    end
   end
 end
