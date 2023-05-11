@@ -48,7 +48,7 @@
             <div class="row text-center">
               <% forecast_day[:hour].each do |forecast_hour| %>
                 <div class="col">
-                  <p class="card-text"><%= forecast_hour[:time] %></p>
+                  <p class="card-text hourly-card-text"><%= forecast_hour[:time] %></p>
                   <img src=<%= forecast_hour[:condition][:icon] %> class="img-fluid" alt=<%= forecast_hour[:condition][:text] %>>
                   <p class="card-text"><%= forecast_hour[:temp] %></p>
                 </div>
