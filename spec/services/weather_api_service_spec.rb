@@ -151,7 +151,6 @@ RSpec.describe WeatherApiService do
   let(:tomorrow_raw) { fake_response_hash["forecast"]["forecastday"].second }
   let(:thursday_raw) { fake_response_hash["forecast"]["forecastday"].third }
 
-
   before(:each) do
     stub_const("ENV", {"WEATHER_API_KEY" => "asdf"})
     stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?days=3&key=asdf&q=46615")
@@ -160,6 +159,31 @@ RSpec.describe WeatherApiService do
 
   it "takes the response data and returns in a usable structure" do
     expect(subject.request_forecast_data).to eq(forecast_data_expectation)
+  end
+
+  describe "#name_this_day checks what day it is and names the day" do
+    before do
+      Timecop.freeze(Time.local(2023, 5, 9))
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "for a record that matches 'localtime'" do
+      day_name = subject.send(:name_this_day, today_raw)
+      expect(day_name).to eq("Today")
+    end
+
+    it "for a record that will be tomorrow and names it such" do
+      day_name = subject.send(:name_this_day, tomorrow_raw)
+      expect(day_name).to eq("Tomorrow")
+    end
+
+    it "for a record past that it just uses the day of the week" do
+      day_name = subject.send(:name_this_day, thursday_raw)
+      expect(day_name).to eq("Thursday")
+    end
   end
 
   describe "#massage_hour_block" do
