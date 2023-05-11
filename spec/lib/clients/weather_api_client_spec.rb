@@ -1,3 +1,4 @@
+require "rails_helper"
 require "clients/weather_api_client"
 
 RSpec.describe WeatherApiClient do
@@ -51,6 +52,24 @@ RSpec.describe WeatherApiClient do
       forecast = subject.forecast("46615")
       expect(forecast).to be_a(Hash)
       expect(forecast["location"]["name"]).to eq("South Bend")
+    end
+  end
+
+  describe "caching the api call" do
+    # eating own dogfood to generate api_uri
+    let(:api_uri) { subject.send(:build_uri, "forecast", q: "46615") }
+
+    before(:each) do
+      stub_request(:get, "http://api.weatherapi.com/v1/forecast.json?key=asdf&q=46615")
+        .to_return(body: fake_response, status: 200)
+      # clear out the cache before every test
+      Rails.cache.clear
+    end
+
+    it "sets live_request to true when the query is sent out" do
+      expect {
+        subject.send(:cach_or_call_api, api_uri)
+      }.to change { subject.live_request }.from(false).to(true)
     end
   end
 end

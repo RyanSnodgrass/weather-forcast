@@ -8,6 +8,16 @@ require "net/http"
 class WeatherApiClient
   API_ROOT_URL = "http://api.weatherapi.com/v1".freeze
 
+  # Make the @live_request instance variable publicly accessible for flagging
+  # purposes. I think it belongs better as a flag on the instance rather than part
+  # of the response data. It's not part of the response data, it's an implementation
+  # detail of this client object.
+  attr_reader :live_request
+
+  def initialize
+    @live_request = false
+  end
+
   # Usually the only thing going to the forecast request is the zip code. You could
   # send additional params that are supported by the api by passing in a hash
   # to `extra_params`.
@@ -29,8 +39,20 @@ class WeatherApiClient
   # stub out in the tests.
   def call_api(api_subject, params)
     api_uri = build_uri(api_subject, params)
-    response = Net::HTTP.get_response(api_uri)
+    response = cach_or_call_api(api_uri)
     JSON.parse(response.body)
+  end
+
+  # If the cache expired, then the cache missed, then this block executes.
+  # If that all happens then @live_request sets to true.
+  def cach_or_call_api(api_uri)
+    response = Rails.cache.read(api_uri)
+    if response.nil?
+      @live_request = true
+      response = Net::HTTP.get_response(api_uri)
+      Rails.cache.write(api_uri, response, expires_in: 20.seconds)
+    end
+    response
   end
 
   # Rusable private method to build a uri object for the api call.
