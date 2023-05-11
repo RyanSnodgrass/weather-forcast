@@ -69,7 +69,16 @@ RSpec.describe WeatherApiClient do
     it "sets live_request to true when the query is sent out" do
       expect {
         subject.send(:cach_or_call_api, api_uri)
-      }.to change { subject.live_request }.from(false).to(true)
+      }.to change { subject.live_request }.from(nil).to(true)
+    end
+
+    it "sets live_request to false if cache is hit" do
+      # send the first call to set the flag to true and run the real request
+      subject.send(:cach_or_call_api, api_uri)
+      expect(subject.live_request).to be true
+      # send the second call and hit the cache, setting the flag to false
+      subject.send(:cach_or_call_api, api_uri)
+      expect(subject.live_request).to be false
     end
   end
 end

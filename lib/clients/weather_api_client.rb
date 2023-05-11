@@ -14,10 +14,6 @@ class WeatherApiClient
   # detail of this client object.
   attr_reader :live_request
 
-  def initialize
-    @live_request = false
-  end
-
   # Usually the only thing going to the forecast request is the zip code. You could
   # send additional params that are supported by the api by passing in a hash
   # to `extra_params`.
@@ -46,6 +42,7 @@ class WeatherApiClient
   # If the cache expired, then the cache missed, then this block executes.
   # If that all happens then @live_request sets to true.
   def cach_or_call_api(api_uri)
+    @live_request = false
     response = Rails.cache.read(api_uri)
     if response.nil?
       @live_request = true
