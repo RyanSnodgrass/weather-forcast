@@ -1,3 +1,5 @@
+require "net/http"
+
 # This class isolates the actual call out to the external WeatherAPI service.
 # ```
 # WeatherApiClient.new.forecast("46615")
