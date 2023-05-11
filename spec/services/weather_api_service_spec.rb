@@ -168,7 +168,7 @@ RSpec.describe WeatherApiService do
     end
   end
 
-  describe "#day_name_and_current_temp checks what day it is for current_temp and dayname" do
+  describe "#dayname_currenttemp_condition checks what day it is for current_temp and dayname" do
     before do
       Timecop.freeze(Time.local(2023, 5, 9))
     end
@@ -178,28 +178,43 @@ RSpec.describe WeatherApiService do
     end
 
     it "for a record that matches today" do
-      day_name = subject.send(:day_name_and_current_temp, today_raw)
+      day_name = subject.send(:dayname_currenttemp_condition, today_raw)
       expectation = {
         day: "Today",
-        current_temp: "70.0"
+        current_temp: "70.0",
+        condition: {
+          code: 1000,
+          icon: "//cdn.weatherapi.com/weather/64x64/day/113.png",
+          text: "Sunny"
+        }
       }
       expect(day_name).to eq(expectation)
     end
 
     it "for a record that will be tomorrow and names it such" do
-      day_name = subject.send(:day_name_and_current_temp, tomorrow_raw)
+      day_name = subject.send(:dayname_currenttemp_condition, tomorrow_raw)
       expectation = {
         day: "Tomorrow",
-        current_temp: "60.9"
+        current_temp: "60.9",
+        condition: {
+          code: 1000,
+          icon: "//cdn.weatherapi.com/weather/64x64/day/113.png",
+          text: "Sunny"
+        }
       }
       expect(day_name).to eq(expectation)
     end
 
     it "for a record past that it just uses the day of the week" do
-      day_name = subject.send(:day_name_and_current_temp, thursday_raw)
+      day_name = subject.send(:dayname_currenttemp_condition, thursday_raw)
       expectation = {
         day: "Thursday",
-        current_temp: "64.2"
+        current_temp: "64.2",
+        condition: {
+          code: 1063,
+          icon: "//cdn.weatherapi.com/weather/64x64/day/176.png",
+          text: "Patchy rain possible"
+        }
       }
       expect(day_name).to eq(expectation)
     end
