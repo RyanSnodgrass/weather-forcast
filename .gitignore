@@ -40,3 +40,5 @@
 # Ignore .env secrets file while keeping the example
 .env*
 !.env.example
+
+spec/examples.txt
