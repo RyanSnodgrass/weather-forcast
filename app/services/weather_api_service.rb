@@ -28,15 +28,14 @@ class WeatherApiService
     @raw_response_hash ||= @client.forecast(@location)
   end
 
-
-  def massage_days
-  end
-
   def massage_day_block(raw_day_response)
-    {
-      day: name_this_day(raw_day_response),
-      current_temp:
-    }
+    dayname_currenttemp_condition(raw_day_response).merge(
+      {
+        low_temp: raw_day_response["day"]["mintemp_f"].to_s,
+        hi_temp: raw_day_response["day"]["maxtemp_f"].to_s,
+        hour: massage_hour_block(raw_day_response)
+      }
+    )
   end
 
 

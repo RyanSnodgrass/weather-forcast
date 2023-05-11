@@ -162,7 +162,15 @@ RSpec.describe WeatherApiService do
   end
 
   describe "#massage_day_block" do
-    it "creates a day block for today" do
+    before do
+      Timecop.freeze(Time.local(2023, 5, 9))
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "combines everything and merges the hash for today" do
       day_block = subject.send(:massage_day_block, today_raw)
       expect(day_block).to eq(today_massaged)
     end
